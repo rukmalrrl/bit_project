@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,7 +34,6 @@ public class MarkAttendance extends JFrame {
 
         submitButton = new JButton("Submit");
         submitButton.setFont(new Font("Bodoni MT", Font.BOLD, 20));
-
 
         // Add action listener to the button
         submitButton.addActionListener(new ActionListener() {
@@ -108,12 +108,45 @@ public class MarkAttendance extends JFrame {
             ResultSet resultSet = checkStmt.executeQuery();
 
             if (resultSet.next()) {
-                // Employee has already signed in, update sign out time
-                String updateQuery = "UPDATE Attendance SET signOutTime = ? WHERE employee_id = ? AND aDate = ?";
+                // Employee has already signed in, update sign out time and calculate work hours and ot hours
+                LocalDateTime signInTime = resultSet.getTimestamp("signInTime").toLocalDateTime();
+                LocalDateTime signOutTime = currentDateTime;
+
+                // Calculate work hours and OT hours
+                LocalTime workStartTime = LocalTime.of(8, 0);
+                LocalTime workEndTime = LocalTime.of(17, 0);
+
+                float workHours = 0;
+                float otHours = 0;
+
+                if (!signInTime.toLocalDate().equals(signOutTime.toLocalDate())) {
+                    // Sign out on a different day is not supported
+                    showNotification("Invalid sign out time.", true);
+                    return;
+                }
+
+                LocalTime signInLocalTime = signInTime.toLocalTime();
+                LocalTime signOutLocalTime = signOutTime.toLocalTime();
+
+                if (signInLocalTime.isBefore(workStartTime)) {
+                    otHours += java.time.Duration.between(signInLocalTime, workStartTime).toMinutes() / 60.0;
+                    signInLocalTime = workStartTime;
+                }
+
+                if (signOutLocalTime.isAfter(workEndTime)) {
+                    otHours += java.time.Duration.between(workEndTime, signOutLocalTime).toMinutes() / 60.0;
+                    signOutLocalTime = workEndTime;
+                }
+
+                workHours += java.time.Duration.between(signInLocalTime, signOutLocalTime).toMinutes() / 60.0;
+
+                String updateQuery = "UPDATE Attendance SET signOutTime = ?, workHours = ?, otHours = ? WHERE employee_id = ? AND aDate = ?";
                 PreparedStatement updateStmt = connection.prepareStatement(updateQuery);
-                updateStmt.setTimestamp(1, Timestamp.valueOf(currentDateTime));
-                updateStmt.setString(2, employeeId);
-                updateStmt.setDate(3, Date.valueOf(currentDate));
+                updateStmt.setTimestamp(1, Timestamp.valueOf(signOutTime));
+                updateStmt.setFloat(2, workHours);
+                updateStmt.setFloat(3, otHours);
+                updateStmt.setString(4, employeeId);
+                updateStmt.setDate(5, Date.valueOf(currentDate));
                 updateStmt.executeUpdate();
                 showNotification("Sign out time recorded successfully.", false);
             } else {
