@@ -15,6 +15,7 @@ public class JobRoles extends JFrame {
 
     public JobRoles() {
         mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(250, 248, 228));
 
         // Title label
         titleLabel = new JLabel("Job Role Details", SwingConstants.CENTER);
@@ -67,6 +68,7 @@ public class JobRoles extends JFrame {
 
         // Create a panel for the buttons and add it to the main panel
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(250, 248, 228));
         buttonPanel.add(btnUpdate);
         buttonPanel.add(btnSubmit);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -87,12 +89,12 @@ public class JobRoles extends JFrame {
             tableModel.setRowCount(0);
             while (resultSet.next()) {
                 tableModel.addRow(new Object[]{
-                        resultSet.getInt("jobId"),
+                        resultSet.getString("jobId"),
                         resultSet.getString("jobTitle"),
-                        resultSet.getInt("hourlyRate"),
-                        resultSet.getInt("otRate"),
-                        resultSet.getInt("allowances"),
-                        resultSet.getInt("deductions")
+                        resultSet.getString("hourlyRate"),
+                        resultSet.getString("otRate"),
+                        resultSet.getString("allowances"),
+                        resultSet.getString("deductions")
                 });
             }
         } catch (SQLException ex) {
@@ -122,30 +124,55 @@ public class JobRoles extends JFrame {
             PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
 
             for (int i = 0; i < tableModel.getRowCount(); i++) {
-                int jobId = (int) tableModel.getValueAt(i, 0);
+                String jobId = (String) tableModel.getValueAt(i, 0);
                 String jobTitle = (String) tableModel.getValueAt(i, 1);
-                int hourlyRate = (int) tableModel.getValueAt(i, 2);
-                int otRate = (int) tableModel.getValueAt(i, 3);
-                int allowances = (int) tableModel.getValueAt(i, 4);
-                int deductions = (int) tableModel.getValueAt(i, 5);
+                String hourlyRate = (String) tableModel.getValueAt(i, 2);
+                String otRate = (String) tableModel.getValueAt(i, 3);
+                String allowances = (String) tableModel.getValueAt(i, 4);
+                String deductions =  (String) tableModel.getValueAt(i, 5);
+
+                // Logging to debug
+                System.out.println("Updating Job Role: " + jobId);
+                System.out.println("Job Title: " + jobTitle);
+                System.out.println("Hourly Rate: " + hourlyRate);
+                System.out.println("OT Rate: " + otRate);
+                System.out.println("Allowances: " + allowances);
+                System.out.println("Deductions: " + deductions);
 
                 updateStatement.setString(1, jobTitle);
-                updateStatement.setInt(2, hourlyRate);
-                updateStatement.setInt(3, otRate);
-                updateStatement.setInt(4, allowances);
-                updateStatement.setInt(5, deductions);
-                updateStatement.setInt(6, jobId);
+                updateStatement.setString(2, hourlyRate);
+                updateStatement.setString(3, otRate);
+                updateStatement.setString(4, allowances);
+                updateStatement.setString(5, deductions);
+                updateStatement.setString(6, jobId);
                 updateStatement.addBatch();
             }
-            updateStatement.executeBatch();
+
+            int[] updateCounts = updateStatement.executeBatch();
             connection.commit();  // Commit transaction
             updateStatement.close();
+
+            // Check the update counts
+            for (int count : updateCounts) {
+                if (count == Statement.SUCCESS_NO_INFO) {
+                    System.out.println("Update succeeded but number of rows affected is unknown.");
+                } else if (count == Statement.EXECUTE_FAILED) {
+                    System.out.println("Update failed.");
+                } else {
+                    System.out.println("Update succeeded; number of rows affected: " + count);
+                }
+            }
+
             JOptionPane.showMessageDialog(this, "Job roles updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error updating job roles: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Invalid number format in table: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
