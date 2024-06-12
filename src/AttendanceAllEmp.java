@@ -1,13 +1,11 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import javax.swing.table.DefaultTableModel;
-
-import java.util.Vector;
 
 public class AttendanceAllEmp extends JFrame {
     private JTextField dateField;
@@ -21,13 +19,28 @@ public class AttendanceAllEmp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
+        // Create the panel for the "Attendance Report" label
+        JPanel titlePanel = new JPanel();
+        titlePanel.setBackground(new Color(250, 246, 228));
+        JLabel titleLabel = new JLabel("Attendance Report", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Bodoni MT", Font.BOLD, 36));
+        titlePanel.add(titleLabel);
+
+        // Create the panel for the rest of the content
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.setBackground(new Color(250, 246, 228));
 
         // Create search components
         JPanel searchPanel = new JPanel();
+        searchPanel.setBackground(new Color(250, 246, 228));
         JLabel dateLabel = new JLabel("Select Date: ");
+        dateLabel.setFont(new Font("Bodoni MT", Font.PLAIN, 20));
         dateField = new JTextField(10);
+        dateField.setFont(new Font("Bodoni MT", Font.PLAIN, 20));
         searchButton = new JButton("Search");
+        searchButton.setFont(new Font("Bodoni MT", Font.BOLD, 20));
 
         // Add action listener to the search button
         searchButton.addActionListener(new ActionListener() {
@@ -40,15 +53,21 @@ public class AttendanceAllEmp extends JFrame {
         searchPanel.add(dateLabel);
         searchPanel.add(dateField);
         searchPanel.add(searchButton);
-        panel.add(searchPanel, BorderLayout.NORTH);
 
         // Create table for displaying attendance details
-        tableModel = new DefaultTableModel(new String[]{"Employee ID", "Sign In Time", "Sign Out Time", "Work Hours", "OT Hours"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"Employee ID", "Employee Name", "Job Title", "Sign In Time", "Sign Out Time"}, 0);
         attendanceTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(attendanceTable);
-        panel.add(scrollPane, BorderLayout.CENTER);
 
-        setContentPane(panel);
+        // Add components to content panel
+        contentPanel.add(searchPanel, BorderLayout.NORTH);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Add panels to the main panel
+        mainPanel.add(titlePanel, BorderLayout.NORTH);
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
+
+        setContentPane(mainPanel);
     }
 
     private void searchAttendance() {
@@ -75,7 +94,11 @@ public class AttendanceAllEmp extends JFrame {
         String password = "root";
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM Attendance WHERE aDate = ?";
+            String query = "SELECT a.employee_id, e.first_name, e.last_name, j.jobTitle, a.signInTime, a.signOutTime " +
+                    "FROM Attendance a " +
+                    "INNER JOIN employeeDetails e ON a.employee_id = e.employee_id " +
+                    "INNER JOIN jobroles j ON e.jobId = j.jobId " +
+                    "WHERE a.aDate = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setDate(1, Date.valueOf(date));
 
@@ -83,12 +106,12 @@ public class AttendanceAllEmp extends JFrame {
 
             while (resultSet.next()) {
                 String employeeId = resultSet.getString("employee_id");
+                String employeeName = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
+                String jobTitle = resultSet.getString("jobTitle");
                 String signInTime = resultSet.getTimestamp("signInTime").toString();
                 String signOutTime = resultSet.getTimestamp("signOutTime").toString();
-                float workHours = resultSet.getFloat("workHours");
-                float otHours = resultSet.getFloat("otHours");
 
-                tableModel.addRow(new Object[]{employeeId, signInTime, signOutTime, workHours, otHours});
+                tableModel.addRow(new Object[]{employeeId, employeeName, jobTitle, signInTime, signOutTime});
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
