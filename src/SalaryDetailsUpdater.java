@@ -65,7 +65,7 @@ public class SalaryDetailsUpdater extends JFrame {
         contentPanel.add(showButton);
 
         // Create the table for displaying salary details
-        tableModel = new DefaultTableModel(new String[]{"Employee ID", "Job ID", "Total Work Hours", "Total OT Hours", "Salary"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"Employee ID", "Name", "Job Title", "Total Work Hours", "Total OT Hours", "Salary"}, 0);
         salaryTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(salaryTable);
 
@@ -99,37 +99,62 @@ public class SalaryDetailsUpdater extends JFrame {
                     float totalWorkHours = hoursResultSet.getFloat("totalWorkHours");
                     float totalOTHours = hoursResultSet.getFloat("totalOTHours");
 
-                    String getJobDetailsQuery = "SELECT jobId FROM employeeDetails WHERE employee_id = ?";
+                    String getJobDetailsQuery = "SELECT e.first_name, e.last_name, j.jobTitle, j.hourlyRate, j.otrate, j.allowances, j.deductions " +
+                            "FROM employeeDetails e " +
+                            "INNER JOIN jobRoles j ON e.jobId = j.jobId " +
+                            "WHERE e.employee_id = ?";
                     PreparedStatement jobPstmt = connection.prepareStatement(getJobDetailsQuery);
                     jobPstmt.setString(1, employeeId);
                     ResultSet jobResultSet = jobPstmt.executeQuery();
 
                     if (jobResultSet.next()) {
-                        String jobId = jobResultSet.getString("jobId");
+                        String firstName = jobResultSet.getString("first_name");
+                        String lastName = jobResultSet.getString("last_name");
+                        String jobTitle = jobResultSet.getString("jobTitle");
+                        float hourlyRate = jobResultSet.getFloat("hourlyRate");
+                        float otRate = jobResultSet.getFloat("otrate");
+                        float allowances = jobResultSet.getFloat("allowances");
+                        float deductions = jobResultSet.getFloat("deductions");
 
-                        String getJobRatesQuery = "SELECT hourlyRate, otrate, allowances, deductions FROM jobRoles WHERE jobId = ?";
-                        PreparedStatement ratesPstmt = connection.prepareStatement(getJobRatesQuery);
-                        ratesPstmt.setString(1, jobId);
-                        ResultSet ratesResultSet = ratesPstmt.executeQuery();
+                        float salary = (totalWorkHours * hourlyRate) + (totalOTHours * otRate) + allowances - deductions;
 
-                        if (ratesResultSet.next()) {
-                            float hourlyRate = ratesResultSet.getFloat("hourlyRate");
-                            float otRate = ratesResultSet.getFloat("otrate");
-                            float allowances = ratesResultSet.getFloat("allowances");
-                            float deductions = ratesResultSet.getFloat("deductions");
+                        String updateSalaryDetailsQuery = "REPLACE INTO salaryDetails (employee_id, month, first_name, last_name, jobTitle, total_work_hours, total_ot_hours, salary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        PreparedStatement updatePstmt = connection.prepareStatement(updateSalaryDetailsQuery);
+                        updatePstmt.setString(1, employeeId);
+                        updatePstmt.setString(2, selectedMonth);
+                        updatePstmt.setString(3, firstName);
+                        updatePstmt.setString(4, lastName);
+                        updatePstmt.setString(5, jobTitle);
+                        updatePstmt.setFloat(6, totalWorkHours);
+                        updatePstmt.setFloat(7, totalOTHours);
+                        updatePstmt.setFloat(8, salary);
+                        updatePstmt.executeUpdate();
+                    }
+                } else {
+                    String getEmployeeDetailsQuery = "SELECT e.first_name, e.last_name, j.jobTitle " +
+                            "FROM employeeDetails e " +
+                            "INNER JOIN jobRoles j ON e.jobId = j.jobId " +
+                            "WHERE e.employee_id = ?";
+                    PreparedStatement empPstmt = connection.prepareStatement(getEmployeeDetailsQuery);
+                    empPstmt.setString(1, employeeId);
+                    ResultSet empResultSet = empPstmt.executeQuery();
 
-                            float salary = (totalWorkHours * hourlyRate) + (totalOTHours * otRate) + allowances - deductions;
+                    if (empResultSet.next()) {
+                        String firstName = empResultSet.getString("first_name");
+                        String lastName = empResultSet.getString("last_name");
+                        String jobTitle = empResultSet.getString("jobTitle");
 
-                            String updateSalaryDetailsQuery = "REPLACE INTO salaryDetails (employee_id, month, jobId, total_work_hours, total_ot_hours, salary) VALUES (?, ?, ?, ?, ?, ?)";
-                            PreparedStatement updatePstmt = connection.prepareStatement(updateSalaryDetailsQuery);
-                            updatePstmt.setString(1, employeeId);
-                            updatePstmt.setString(2, selectedMonth);
-                            updatePstmt.setString(3, jobId);
-                            updatePstmt.setFloat(4, totalWorkHours);
-                            updatePstmt.setFloat(5, totalOTHours);
-                            updatePstmt.setFloat(6, salary);
-                            updatePstmt.executeUpdate();
-                        }
+                        String updateSalaryDetailsQuery = "REPLACE INTO salaryDetails (employee_id, month, first_name, last_name, jobTitle, total_work_hours, total_ot_hours, salary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        PreparedStatement updatePstmt = connection.prepareStatement(updateSalaryDetailsQuery);
+                        updatePstmt.setString(1, employeeId);
+                        updatePstmt.setString(2, selectedMonth);
+                        updatePstmt.setString(3, firstName);
+                        updatePstmt.setString(4, lastName);
+                        updatePstmt.setString(5, jobTitle);
+                        updatePstmt.setFloat(6, 0);
+                        updatePstmt.setFloat(7, 0);
+                        updatePstmt.setFloat(8, 0);
+                        updatePstmt.executeUpdate();
                     }
                 }
             }
@@ -155,16 +180,18 @@ public class SalaryDetailsUpdater extends JFrame {
 
             while (rs.next()) {
                 String employeeId = rs.getString("employee_id");
-                String jobId = rs.getString("jobId");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String jobTitle = rs.getString("jobTitle");
                 float totalWorkHours = rs.getFloat("total_work_hours");
                 float totalOTHours = rs.getFloat("total_ot_hours");
                 float salary = rs.getFloat("salary");
 
-                tableModel.addRow(new Object[]{employeeId, jobId, totalWorkHours, totalOTHours, salary});
+                tableModel.addRow(new Object[]{employeeId, firstName + " " + lastName, jobTitle, totalWorkHours, totalOTHours, salary});
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error retrieving salary details: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error fetching salary details: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
