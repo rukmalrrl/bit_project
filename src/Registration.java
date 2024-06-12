@@ -14,16 +14,15 @@ public class Registration {
     private JTextField id;
     private JTextField nic;
     private JTextField eMail;
-    private JTextField jobRoll;
-    private JTextField basicSalary;
-    private JTextField otRate;
+    private JTextField jobId;
+    private JTextField phoneNo;
     private JTextField bAccount;
     private JRadioButton maleRadioButton;
     private JTextField bDay;
     private JRadioButton femaleRadioButton;
     private JButton btnRegister;
     private JButton btnCancel;
-    private JPanel registerPanel;
+    JPanel registerPanel;
 
     public Registration() {
         btnRegister.addActionListener(new ActionListener() {
@@ -36,15 +35,14 @@ public class Registration {
                 String idText = id.getText();
                 String nicText = nic.getText();
                 String emailText = eMail.getText();
-                String jobRoleText = jobRoll.getText();
-                String basicSalaryText = basicSalary.getText();
-                String otRateText = otRate.getText();
+                String jobIdText = jobId.getText();
+                String phoneNoText = phoneNo.getText();
                 String bankAccountText = bAccount.getText();
                 String birthdayText = bDay.getText();
                 String gender = maleRadioButton.isSelected() ? "Male" : "Female";
 
                 if (firstName.isEmpty() || lastName.isEmpty() || addressText.isEmpty() || idText.isEmpty() || nicText.isEmpty() ||
-                        emailText.isEmpty() || jobRoleText.isEmpty() || basicSalaryText.isEmpty() || otRateText.isEmpty() ||
+                        emailText.isEmpty() || jobIdText.isEmpty() || phoneNoText.isEmpty() ||
                         bankAccountText.isEmpty() || birthdayText.isEmpty() || (!maleRadioButton.isSelected() && !femaleRadioButton.isSelected())) {
                     JOptionPane.showMessageDialog(registerPanel, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -62,7 +60,7 @@ public class Registration {
                         JOptionPane.showMessageDialog(registerPanel, "Employee ID already exists: " + resultSet.getString("employee_id"), "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
                         // Row does not exist, insert the new row
-                        String insertQuery = "INSERT INTO employeeDetails (employee_id, first_name, last_name, address, birthday, nic, email, gender, job_role, basic_salary, ot_rate, bank_account) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        String insertQuery = "INSERT INTO employeeDetails (employee_id, first_name, last_name, address, birthday, nic, email, gender, jobId,phoneNo, bank_account) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                         PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
                         insertStatement.setString(1, idText);
                         insertStatement.setString(2, firstName);
@@ -72,10 +70,9 @@ public class Registration {
                         insertStatement.setString(6, nicText);
                         insertStatement.setString(7, emailText);
                         insertStatement.setString(8, gender);
-                        insertStatement.setString(9, jobRoleText);
-                        insertStatement.setString(10, basicSalaryText);
-                        insertStatement.setString(11, otRateText);
-                        insertStatement.setString(12, bankAccountText);
+                        insertStatement.setString(9, jobIdText);
+                        insertStatement.setString(10, phoneNoText);
+                        insertStatement.setString(11, bankAccountText);
                         insertStatement.executeUpdate();
                         JOptionPane.showMessageDialog(registerPanel, "Inserted new employee: " + firstName + " " + lastName, "Success", JOptionPane.INFORMATION_MESSAGE);
                         ClearFields();
@@ -107,9 +104,8 @@ public class Registration {
         id.setText("");
         nic.setText("");
         eMail.setText("");
-        jobRoll.setText("");
-        basicSalary.setText("");
-        otRate.setText("");
+        jobId.setText("");
+        phoneNo.setText("");
         bAccount.setText("");
         bDay.setText("");
         maleRadioButton.setSelected(false);
