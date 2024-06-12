@@ -67,6 +67,7 @@ public class SalaryDetailsUpdater extends JFrame {
         // Create the table for displaying salary details
         tableModel = new DefaultTableModel(new String[]{"Employee ID", "Name", "Job Title", "Total Work Hours", "Total OT Hours", "Salary"}, 0);
         salaryTable = new JTable(tableModel);
+add        salaryTable.setFont(new Font("Bodoni MT", Font.PLAIN, 15));
         JScrollPane scrollPane = new JScrollPane(salaryTable);
 
         // Add panels to the main panel
