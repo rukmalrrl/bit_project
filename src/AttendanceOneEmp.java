@@ -24,6 +24,12 @@ public class AttendanceOneEmp extends JFrame {
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new BorderLayout());
+
+
+        // Create the "Attendance Report" label
+        JLabel titleLabel = new JLabel("Attendance Report", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Bodoni MT", Font.BOLD, 36));
+        panel.add(titleLabel, BorderLayout.NORTH);
         panel.setBackground(new Color(250, 246, 228));
 
         // Create search components
@@ -149,7 +155,6 @@ public class AttendanceOneEmp extends JFrame {
             JOptionPane.showMessageDialog(this, "Error fetching attendance data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
