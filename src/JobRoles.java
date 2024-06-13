@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-public class JobRoles extends JFrame {
+public class JobRoles extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     private JButton btnUpdate;
@@ -14,13 +14,13 @@ public class JobRoles extends JFrame {
     private JLabel titleLabel;
 
     public JobRoles() {
-        mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(new Color(250, 248, 228));
+        setLayout(new BorderLayout());
+        setBackground(new Color(250, 248, 228));
 
         // Title label
         titleLabel = new JLabel("Job Role Details", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Bodoni MT", Font.BOLD, 48));
-        mainPanel.add(titleLabel, BorderLayout.NORTH);
+        add(titleLabel, BorderLayout.NORTH);
 
         // Create the table with a non-editable model
         tableModel = new DefaultTableModel(new String[]{"Job ID", "Job Title", "Hourly Rate", "OT Rate", "Allowances", "Deductions"}, 0) {
@@ -34,7 +34,7 @@ public class JobRoles extends JFrame {
         table.getTableHeader().setFont(new Font("Bodoni MT", Font.BOLD, 20));
         table.setRowHeight(30);
         JScrollPane scrollPane = new JScrollPane(table);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
 
         // Load data from the database
         loadJobRoles();
@@ -71,14 +71,7 @@ public class JobRoles extends JFrame {
         buttonPanel.setBackground(new Color(250, 248, 228));
         buttonPanel.add(btnUpdate);
         buttonPanel.add(btnSubmit);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        // Set up the frame
-        setContentPane(mainPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Job Roles Management");
-        setSize(800, 600);
-        setLocationRelativeTo(null);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     private void loadJobRoles() {
@@ -173,13 +166,12 @@ public class JobRoles extends JFrame {
         }
     }
 
-
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new JobRoles().setVisible(true);
-            }
-        });
+        JFrame frame = new JFrame("Job Roles Management");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.add(new JobRoles());
+        frame.setVisible(true);
     }
 }
