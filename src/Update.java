@@ -14,7 +14,6 @@ public class Update {
     private JRadioButton femaleRadioButton;
     private JButton btnUpdate;
     private JButton btnCancel;
-    private JTextField otRate;
     private JTextField bAccount;
     private JTextField fName;
     private JTextField lName;
@@ -22,12 +21,19 @@ public class Update {
     private JTextField address;
     private JTextField nic;
     private JTextField eMail;
-    private JTextField jobRoll;
-    private JTextField basicSalary;
-    private JPanel updatePanel;
+    private JTextField jobId;
+    private JTextField phoneNo;
+
+    JPanel updatePanel;
 
     public Update() {
         btnSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchEmployee();
+            }
+        });
+        search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchEmployee();
@@ -52,25 +58,40 @@ public class Update {
     private void searchEmployee() {
         String searchText = search.getText();
         if (searchText.isEmpty()) {
-            JOptionPane.showMessageDialog(updatePanel, "Please enter the employee name", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(updatePanel, "Please enter the employee name or ID", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        String[] names = searchText.split(" ");
-        if (names.length != 2) {
-            JOptionPane.showMessageDialog(updatePanel, "Please enter the full name (first and last name)", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String firstName = names[0];
-        String lastName = names[1];
+        // Check if the input is numeric (employee ID) or not (employee name)
+        boolean isNumeric = searchText.chars().allMatch(Character::isDigit);
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bitApp", "root", "root");
-            String searchQuery = "SELECT * FROM employeeDetails WHERE first_name = ? AND last_name = ?";
-            PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
-            searchStatement.setString(1, firstName);
-            searchStatement.setString(2, lastName);
+            String searchQuery;
+            PreparedStatement searchStatement;
+
+            if (isNumeric) {
+                // Search by employee ID
+                searchQuery = "SELECT * FROM employeeDetails WHERE employee_id = ?";
+                searchStatement = connection.prepareStatement(searchQuery);
+                searchStatement.setString(1, searchText);
+            } else {
+                // Search by employee name
+                String[] names = searchText.split(" ");
+                if (names.length != 2) {
+                    JOptionPane.showMessageDialog(updatePanel, "Please enter the full name (first and last name)", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String firstName = names[0];
+                String lastName = names[1];
+
+                searchQuery = "SELECT * FROM employeeDetails WHERE first_name = ? AND last_name = ?";
+                searchStatement = connection.prepareStatement(searchQuery);
+                searchStatement.setString(1, firstName);
+                searchStatement.setString(2, lastName);
+            }
+
             ResultSet resultSet = searchStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -80,9 +101,8 @@ public class Update {
                 bDay.setText(resultSet.getString("birthday"));
                 nic.setText(resultSet.getString("nic"));
                 eMail.setText(resultSet.getString("email"));
-                jobRoll.setText(resultSet.getString("job_role"));
-                basicSalary.setText(resultSet.getString("basic_salary"));
-                otRate.setText(resultSet.getString("ot_rate"));
+                jobId.setText(resultSet.getString("jobId"));
+                phoneNo.setText(resultSet.getString("phoneNo"));
                 bAccount.setText(resultSet.getString("bank_account"));
                 String gender = resultSet.getString("gender");
                 if ("Male".equals(gender)) {
@@ -105,6 +125,7 @@ public class Update {
         }
     }
 
+
     private void updateEmployee() {
         String firstName = fName.getText();
         String lastName = lName.getText();
@@ -112,14 +133,13 @@ public class Update {
         String birthdayText = bDay.getText();
         String nicText = nic.getText();
         String emailText = eMail.getText();
-        String jobRoleText = jobRoll.getText();
-        String basicSalaryText = basicSalary.getText();
-        String otRateText = otRate.getText();
+        String jobIdText = jobId.getText();
+        String phoneNoText = phoneNo.getText();
         String bankAccountText = bAccount.getText();
         String gender = maleRadioButton.isSelected() ? "Male" : "Female";
 
         if (firstName.isEmpty() || lastName.isEmpty() || addressText.isEmpty() || birthdayText.isEmpty() || nicText.isEmpty() ||
-                emailText.isEmpty() || jobRoleText.isEmpty() || basicSalaryText.isEmpty() || otRateText.isEmpty() ||
+                emailText.isEmpty() || jobIdText.isEmpty() || phoneNoText.isEmpty() ||
                 bankAccountText.isEmpty() || (!maleRadioButton.isSelected() && !femaleRadioButton.isSelected())) {
             JOptionPane.showMessageDialog(updatePanel, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -127,19 +147,18 @@ public class Update {
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bitApp", "root", "root");
-            String updateQuery = "UPDATE employeeDetails SET address = ?, birthday = ?, nic = ?, email = ?, gender = ?, job_role = ?, basic_salary = ?, ot_rate = ?, bank_account = ? WHERE first_name = ? AND last_name = ?";
+            String updateQuery = "UPDATE employeeDetails SET address = ?, birthday = ?, nic = ?, email = ?, gender = ?, jobId = ?, phoneNo = ?, bank_account = ? WHERE first_name = ? AND last_name = ?";
             PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
             updateStatement.setString(1, addressText);
             updateStatement.setString(2, birthdayText);
             updateStatement.setString(3, nicText);
             updateStatement.setString(4, emailText);
             updateStatement.setString(5, gender);
-            updateStatement.setString(6, jobRoleText);
-            updateStatement.setString(7, basicSalaryText);
-            updateStatement.setString(8, otRateText);
-            updateStatement.setString(9, bankAccountText);
-            updateStatement.setString(10, firstName);
-            updateStatement.setString(11, lastName);
+            updateStatement.setString(6, jobIdText);
+            updateStatement.setString(7, phoneNoText);
+            updateStatement.setString(8, bankAccountText);
+            updateStatement.setString(9, firstName);
+            updateStatement.setString(10, lastName);
 
             int affectedRows = updateStatement.executeUpdate();
             if (affectedRows > 0) {
@@ -163,12 +182,11 @@ public class Update {
         bDay.setText("");
         nic.setText("");
         eMail.setText("");
-        jobRoll.setText("");
-        basicSalary.setText("");
-        otRate.setText("");
+        jobId.setText("");
         bAccount.setText("");
         maleRadioButton.setSelected(false);
         femaleRadioButton.setSelected(false);
+        phoneNo.setText("");
     }
 
     public static void main(String[] args) {
