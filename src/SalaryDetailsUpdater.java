@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 
-public class SalaryDetailsUpdater extends JFrame {
+public class SalaryDetailsUpdater extends JPanel {
     private JComboBox<String> monthSelector;
     private JButton calculateButton;
     private JButton showButton;
@@ -17,12 +17,7 @@ public class SalaryDetailsUpdater extends JFrame {
     private static final String PASSWORD = "root";
 
     public SalaryDetailsUpdater() {
-        setTitle("Salary Details Updater");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        setLayout(new BorderLayout());
 
         // Create the panel for the "Salary Report" label
         JPanel titlePanel = new JPanel();
@@ -67,15 +62,13 @@ public class SalaryDetailsUpdater extends JFrame {
         // Create the table for displaying salary details
         tableModel = new DefaultTableModel(new String[]{"Employee ID", "Name", "Job Title", "Total Work Hours", "Total OT Hours", "Salary"}, 0);
         salaryTable = new JTable(tableModel);
-add        salaryTable.setFont(new Font("Bodoni MT", Font.PLAIN, 15));
+        salaryTable.setFont(new Font("Bodoni MT", Font.PLAIN, 15));
         JScrollPane scrollPane = new JScrollPane(salaryTable);
 
         // Add panels to the main panel
-        mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
-        mainPanel.add(scrollPane, BorderLayout.SOUTH);
-
-        setContentPane(mainPanel);
+        add(titlePanel, BorderLayout.NORTH);
+        add(contentPanel, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.SOUTH);
     }
 
     private void calculateAndUpdate() {
@@ -197,11 +190,11 @@ add        salaryTable.setFont(new Font("Bodoni MT", Font.PLAIN, 15));
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new SalaryDetailsUpdater().setVisible(true);
-            }
-        });
+        JFrame frame = new JFrame("Salary Details Updater");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.add(new SalaryDetailsUpdater());
+        frame.setVisible(true);
     }
 }
