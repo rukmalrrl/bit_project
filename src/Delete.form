@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Delete">
-  <grid id="27dc6" binding="deletePanel" layout-manager="GridLayoutManager" row-count="20" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="deletePanel" layout-manager="GridLayoutManager" row-count="19" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="50" left="50" bottom="50" right="50"/>
     <constraints>
-      <xy x="20" y="20" width="573" height="659"/>
+      <xy x="20" y="20" width="573" height="634"/>
     </constraints>
     <properties>
       <background color="-330012"/>
@@ -12,7 +12,7 @@
     <children>
       <vspacer id="7ea33">
         <constraints>
-          <grid row="18" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="17" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
       <component id="4f5d5" class="javax.swing.JLabel">
@@ -30,7 +30,7 @@
         </constraints>
         <properties>
           <font name="Bodoni MT" size="20" style="1"/>
-          <text value="Enter Name : "/>
+          <text value="Enter Name / ID : "/>
         </properties>
       </component>
       <component id="4e7f" class="javax.swing.JTextField" binding="search">
@@ -108,7 +108,7 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="60fbd" class="javax.swing.JLabel" binding="lbl9">
+      <component id="950ab" class="javax.swing.JLabel" binding="lbl10">
         <constraints>
           <grid row="15" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -117,18 +117,9 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="950ab" class="javax.swing.JLabel" binding="lbl10">
-        <constraints>
-          <grid row="16" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bodoni MT" size="20" style="1"/>
-          <text value=""/>
-        </properties>
-      </component>
       <component id="b4082" class="javax.swing.JLabel" binding="lbl11">
         <constraints>
-          <grid row="17" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="16" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font name="Bodoni MT" size="20" style="1"/>
@@ -232,7 +223,7 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="2bd09" class="javax.swing.JLabel" binding="jobRoll">
+      <component id="2bd09" class="javax.swing.JLabel" binding="jobId">
         <constraints>
           <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -241,7 +232,7 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="7f80d" class="javax.swing.JLabel" binding="basicSalary">
+      <component id="928d2" class="javax.swing.JLabel" binding="phoneNo">
         <constraints>
           <grid row="15" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -250,18 +241,9 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="928d2" class="javax.swing.JLabel" binding="otRate">
-        <constraints>
-          <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <font name="Bodoni MT" size="20" style="0"/>
-          <text value=""/>
-        </properties>
-      </component>
       <component id="720a4" class="javax.swing.JLabel" binding="bankAccount">
         <constraints>
-          <grid row="17" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font name="Bodoni MT" size="20" style="0"/>
@@ -290,7 +272,7 @@
       </hspacer>
       <component id="b199b" class="javax.swing.JButton" binding="btnDelete">
         <constraints>
-          <grid row="19" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font name="Bodoni MT" size="20" style="1"/>

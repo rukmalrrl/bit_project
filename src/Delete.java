@@ -17,9 +17,8 @@ public class Delete {
     private JLabel nic;
     private JLabel email;
     private JLabel gender;
-    private JLabel jobRoll;
-    private JLabel basicSalary;
-    private JLabel otRate;
+    private JLabel jobId;
+    private JLabel phoneNo;
     private JLabel bankAccount;
     private JLabel lbl1;
     private JLabel lbl2;
@@ -29,10 +28,9 @@ public class Delete {
     private JLabel lbl6;
     private JLabel lbl7;
     private JLabel lbl8;
-    private JLabel lbl9;
     private JLabel lbl10;
     private JLabel lbl11;
-    private JPanel deletePanel;
+    JPanel deletePanel;
     private JButton btnDelete;
 
     public Delete() {
@@ -63,25 +61,39 @@ public class Delete {
     private void performSearch() {
         String searchText = search.getText();
         if (searchText.isEmpty()) {
-            JOptionPane.showMessageDialog(deletePanel, "Please enter the employee name", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(deletePanel, "Please enter the employee name or ID", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        String[] names = searchText.split(" ");
-        if (names.length != 2) {
-            JOptionPane.showMessageDialog(deletePanel, "Please enter the full name (first and last name)", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String firstName = names[0];
-        String lastName = names[1];
+        boolean isNumeric = searchText.chars().allMatch(Character::isDigit);
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bitApp", "root", "root");
-            String searchQuery = "SELECT * FROM employeeDetails WHERE first_name = ? AND last_name = ?";
-            PreparedStatement searchStatement = connection.prepareStatement(searchQuery);
-            searchStatement.setString(1, firstName);
-            searchStatement.setString(2, lastName);
+            String searchQuery;
+            PreparedStatement searchStatement;
+
+            if (isNumeric) {
+                // Search by employee ID
+                searchQuery = "SELECT * FROM employeeDetails WHERE employee_id = ?";
+                searchStatement = connection.prepareStatement(searchQuery);
+                searchStatement.setString(1, searchText);
+            } else {
+                // Search by employee name
+                String[] names = searchText.split(" ");
+                if (names.length != 2) {
+                    JOptionPane.showMessageDialog(deletePanel, "Please enter the full name (first and last name)", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String firstName = names[0];
+                String lastName = names[1];
+
+                searchQuery = "SELECT * FROM employeeDetails WHERE first_name = ? AND last_name = ?";
+                searchStatement = connection.prepareStatement(searchQuery);
+                searchStatement.setString(1, firstName);
+                searchStatement.setString(2, lastName);
+            }
+
             ResultSet resultSet = searchStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -93,9 +105,8 @@ public class Delete {
                 nic.setText(resultSet.getString("nic"));
                 gender.setText(resultSet.getString("gender"));
                 email.setText(resultSet.getString("email"));
-                jobRoll.setText(resultSet.getString("job_role"));
-                basicSalary.setText(resultSet.getString("basic_salary"));
-                otRate.setText(resultSet.getString("ot_rate"));
+                jobId.setText(resultSet.getString("jobId"));
+                phoneNo.setText(resultSet.getString("phoneNo"));
                 bankAccount.setText(resultSet.getString("bank_account"));
                 btnDelete.setVisible(true);  // Make the delete button visible after displaying search results
             } else {
@@ -147,10 +158,9 @@ public class Delete {
         lbl5.setText("NIC           :");
         lbl6.setText("Gender        :");
         lbl7.setText("E mail        :");
-        lbl8.setText("Job Roll      :");
-        lbl9.setText("Basic Salary  :");
-        lbl10.setText("OT Rate       :");
-        lbl11.setText("Bank Account  :");
+        lbl8.setText("Job Id      :");
+        lbl10.setText("Phone No        :");
+        lbl11.setText("Bank Account :");
     }
 
     public void clearLabels() {
@@ -161,9 +171,8 @@ public class Delete {
         nic.setText("");
         gender.setText("");
         email.setText("");
-        jobRoll.setText("");
-        basicSalary.setText("");
-        otRate.setText("");
+        jobId.setText("");
+        phoneNo.setText("");
         bankAccount.setText("");
         lbl1.setText("");
         lbl2.setText("");
@@ -173,7 +182,6 @@ public class Delete {
         lbl6.setText("");
         lbl7.setText("");
         lbl8.setText("");
-        lbl9.setText("");
         lbl10.setText("");
         lbl11.setText("");
     }
