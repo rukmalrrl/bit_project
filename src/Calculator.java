@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 
-public class Calculator extends JFrame implements ActionListener {
+class Calculator extends JPanel implements ActionListener {
     private JTextField textField;
     private JButton[] numberButtons;
     private JButton[] functionButtons;
@@ -13,10 +13,6 @@ public class Calculator extends JFrame implements ActionListener {
     };
 
     public Calculator() {
-        setTitle("Calculator");
-        setSize(400, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         // Create and configure text field
@@ -72,8 +68,6 @@ public class Calculator extends JFrame implements ActionListener {
         buttonPanel.add(functionButtons[10]); // cos
         buttonPanel.add(functionButtons[11]); // tan
         buttonPanel.add(functionButtons[8]); // sqrt
-
-        setVisible(true);
     }
 
     private JButton createButton(String text, Color color) {
@@ -83,10 +77,6 @@ public class Calculator extends JFrame implements ActionListener {
         button.setBackground(color);
         button.addActionListener(this);
         return button;
-    }
-
-    public static void main(String[] args) {
-        new Calculator();
     }
 
     @Override

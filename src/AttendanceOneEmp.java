@@ -9,7 +9,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class AttendanceOneEmp extends JFrame {
+public class AttendanceOneEmp extends JPanel {
     private JTextField searchField;
     private JButton searchButton;
     private JLabel nameLabel;
@@ -18,19 +18,13 @@ public class AttendanceOneEmp extends JFrame {
     private DefaultTableModel tableModel;
 
     public AttendanceOneEmp() {
-        setTitle("Attendance Report");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
-        JPanel panel = new JPanel(new BorderLayout());
-
+        setLayout(new BorderLayout());
 
         // Create the "Attendance Report" label
         JLabel titleLabel = new JLabel("Attendance Report", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Bodoni MT", Font.BOLD, 36));
-        panel.add(titleLabel, BorderLayout.NORTH);
-        panel.setBackground(new Color(250, 246, 228));
+        add(titleLabel, BorderLayout.NORTH);
+        setBackground(new Color(250, 246, 228));
 
         // Create search components
         JPanel searchPanel = new JPanel();
@@ -62,7 +56,7 @@ public class AttendanceOneEmp extends JFrame {
 
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
-        panel.add(searchPanel, BorderLayout.NORTH);
+        add(searchPanel, BorderLayout.NORTH);
 
         // Create labels for displaying employee name and job title
         JPanel labelPanel = new JPanel(new GridLayout(2, 1));
@@ -75,16 +69,14 @@ public class AttendanceOneEmp extends JFrame {
         jobTitleLabel.setFont(new Font("Bodoni MT", Font.PLAIN, 18));
         labelPanel.add(jobTitleLabel);
 
-        panel.add(labelPanel, BorderLayout.CENTER);
+        add(labelPanel, BorderLayout.CENTER);
 
         // Create table for displaying attendance details
         tableModel = new DefaultTableModel(new String[]{"Employee ID", "Date", "Sign In Time", "Sign Out Time", "Work Hours", "OT Hours"}, 0);
         attendanceTable = new JTable(tableModel);
         attendanceTable.setVisible(false); // Initially hide the table
         JScrollPane scrollPane = new JScrollPane(attendanceTable);
-        panel.add(scrollPane, BorderLayout.SOUTH);
-
-        setContentPane(panel);
+        add(scrollPane, BorderLayout.SOUTH);
     }
 
     private void searchAttendance() {
@@ -157,11 +149,13 @@ public class AttendanceOneEmp extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new AttendanceOneEmp().setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Attendance Report");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
+            frame.setContentPane(new AttendanceOneEmp());
+            frame.setVisible(true);
         });
     }
 }

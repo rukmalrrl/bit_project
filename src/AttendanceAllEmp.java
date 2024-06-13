@@ -7,19 +7,14 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class AttendanceAllEmp extends JFrame {
+public class AttendanceAllEmp extends JPanel {
     private JTextField dateField;
     private JButton searchButton;
     private JTable attendanceTable;
     private DefaultTableModel tableModel;
 
     public AttendanceAllEmp() {
-        setTitle("Attendance Report");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        setLayout(new BorderLayout());
 
         // Create the panel for the "Attendance Report" label
         JPanel titlePanel = new JPanel();
@@ -64,10 +59,8 @@ public class AttendanceAllEmp extends JFrame {
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
         // Add panels to the main panel
-        mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
-
-        setContentPane(mainPanel);
+        add(titlePanel, BorderLayout.NORTH);
+        add(contentPanel, BorderLayout.CENTER);
     }
 
     private void searchAttendance() {
@@ -117,14 +110,5 @@ public class AttendanceAllEmp extends JFrame {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error fetching attendance data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new AttendanceAllEmp().setVisible(true);
-            }
-        });
     }
 }
