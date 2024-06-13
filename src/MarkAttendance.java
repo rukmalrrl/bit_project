@@ -97,6 +97,20 @@ public class MarkAttendance extends JPanel {
                 return;
             }
 
+            // Get job title based on employee's job ID
+            String jobQuery = "SELECT j.jobTitle FROM employeeDetails e INNER JOIN jobRoles j ON e.jobId = j.jobId WHERE e.employee_id = ?";
+            PreparedStatement jobStmt = connection.prepareStatement(jobQuery);
+            jobStmt.setString(1, employeeId);
+            ResultSet jobResult = jobStmt.executeQuery();
+
+            String jobTitle = "";
+            if (jobResult.next()) {
+                jobTitle = jobResult.getString("jobTitle");
+            } else {
+                showNotification("Job title not found for the employee.", true);
+                return;
+            }
+
             // Check if the employee has already signed in today
             String checkQuery = "SELECT * FROM Attendance WHERE employee_id = ? AND aDate = ?";
             PreparedStatement checkStmt = connection.prepareStatement(checkQuery);
@@ -137,22 +151,24 @@ public class MarkAttendance extends JPanel {
 
                 workHours += java.time.Duration.between(signInLocalTime, signOutLocalTime).toMinutes() / 60.0;
 
-                String updateQuery = "UPDATE Attendance SET signOutTime = ?, workHours = ?, otHours = ? WHERE employee_id = ? AND aDate = ?";
+                String updateQuery = "UPDATE Attendance SET signOutTime = ?, workHours = ?, otHours = ?, jobTitle = ? WHERE employee_id = ? AND aDate = ?";
                 PreparedStatement updateStmt = connection.prepareStatement(updateQuery);
                 updateStmt.setTimestamp(1, Timestamp.valueOf(signOutTime));
                 updateStmt.setFloat(2, workHours);
                 updateStmt.setFloat(3, otHours);
-                updateStmt.setString(4, employeeId);
-                updateStmt.setDate(5, Date.valueOf(currentDate));
+                updateStmt.setString(4, jobTitle);
+                updateStmt.setString(5, employeeId);
+                updateStmt.setDate(6, Date.valueOf(currentDate));
                 updateStmt.executeUpdate();
                 showNotification("Sign out time recorded successfully.", false);
             } else {
                 // Employee is signing in, insert new record
-                String insertQuery = "INSERT INTO Attendance (employee_id, aDate, signInTime) VALUES (?, ?, ?)";
+                String insertQuery = "INSERT INTO Attendance (employee_id, aDate, signInTime, jobTitle) VALUES (?, ?, ?, ?)";
                 PreparedStatement insertStmt = connection.prepareStatement(insertQuery);
                 insertStmt.setString(1, employeeId);
                 insertStmt.setDate(2, Date.valueOf(currentDate));
                 insertStmt.setTimestamp(3, Timestamp.valueOf(currentDateTime));
+                insertStmt.setString(4, jobTitle);
                 insertStmt.executeUpdate();
                 showNotification("Sign in time recorded successfully.", false);
             }
@@ -161,6 +177,7 @@ public class MarkAttendance extends JPanel {
             showNotification("Error marking attendance: " + ex.getMessage(), true);
         }
     }
+
 
     private void showNotification(String message, boolean isError) {
         notificationLabel.setText(message);
