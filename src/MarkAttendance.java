@@ -11,22 +11,22 @@ import java.time.LocalTime;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MarkAttendance extends JFrame {
+public class MarkAttendance extends JPanel {
     private JTextField employeeIdField;
     private JButton submitButton;
-    private JPanel mainPanel;
+    JPanel markAttendancePanel;
     private JLabel titleLabel;
     private JLabel notificationLabel;
 
     public MarkAttendance() {
-        mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(new Color(250, 246, 228)); // Set background color
+        markAttendancePanel = new JPanel(new BorderLayout());
+        markAttendancePanel.setBackground(new Color(250, 246, 228)); // Set background color
 
         // Title label
         titleLabel = new JLabel("Employee Attendance", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Bodoni MT", Font.BOLD, 48));
         titleLabel.setBackground(new Color(250, 246, 228));
-        mainPanel.add(titleLabel, BorderLayout.NORTH);
+        markAttendancePanel.add(titleLabel, BorderLayout.NORTH);
 
         // Create the text field and button
         employeeIdField = new JTextField(20);
@@ -65,15 +65,12 @@ public class MarkAttendance extends JFrame {
         inputPanel.add(submitButton);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Add space between components
 
-        mainPanel.add(inputPanel, BorderLayout.CENTER);
-        mainPanel.add(notificationLabel, BorderLayout.SOUTH);
+        markAttendancePanel.add(inputPanel, BorderLayout.CENTER);
+        markAttendancePanel.add(notificationLabel, BorderLayout.SOUTH);
 
-        // Set up the frame
-        setContentPane(mainPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Employee Attendance Management");
-        setSize(600, 400);
-        setLocationRelativeTo(null);
+        // Add markAttendancePanel to MarkAttendance
+        setLayout(new BorderLayout());
+        add(markAttendancePanel, BorderLayout.CENTER);
     }
 
     private void markAttendance(String employeeId) {
@@ -186,7 +183,12 @@ public class MarkAttendance extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MarkAttendance().setVisible(true);
+                JFrame frame = new JFrame("Employee Attendance Management");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(600, 400);
+                frame.setLocationRelativeTo(null);
+                frame.setContentPane(new MarkAttendance());
+                frame.setVisible(true);
             }
         });
     }
