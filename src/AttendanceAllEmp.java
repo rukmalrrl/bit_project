@@ -102,7 +102,10 @@ public class AttendanceAllEmp extends JPanel {
                 String employeeName = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
                 String jobTitle = resultSet.getString("jobTitle");
                 String signInTime = resultSet.getTimestamp("signInTime").toString();
-                String signOutTime = resultSet.getTimestamp("signOutTime").toString();
+
+                // Check if signOutTime is null
+                String signOutTime = resultSet.getTimestamp("signOutTime") != null ?
+                        resultSet.getTimestamp("signOutTime").toString() : "Not signed out";
 
                 tableModel.addRow(new Object[]{employeeId, employeeName, jobTitle, signInTime, signOutTime});
             }
@@ -111,4 +114,5 @@ public class AttendanceAllEmp extends JPanel {
             JOptionPane.showMessageDialog(this, "Error fetching attendance data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 }
