@@ -8,7 +8,10 @@ import java.util.Map;
 
 public class Dashboard extends JPanel {
     private JLabel employeeLabel;
+    private JLabel countLabel;
+
     private JLabel attendanceLabel;
+    private JLabel attendanceCountLabel; // Added for count
     private JPanel upperLeftPanel;
     private JPanel upperRightPanel;
     private JPanel lowerLeftPanel;
@@ -39,15 +42,32 @@ public class Dashboard extends JPanel {
         add(lowerRightPanel);
 
         // Initialize labels for upper panels
-        employeeLabel = new JLabel("Loading...");
-        employeeLabel.setFont(new Font("Bodoni MT", Font.BOLD, 40));
-        employeeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        upperLeftPanel.add(employeeLabel, BorderLayout.CENTER);
+        JPanel employeeCountPanel = new JPanel(new BorderLayout());
+        employeeCountPanel.setBackground(new Color(250, 246, 228));
 
-        attendanceLabel = new JLabel("Loading...");
+        employeeLabel = new JLabel("Total Employees", SwingConstants.CENTER);
+        employeeLabel.setFont(new Font("Bodoni MT", Font.BOLD, 40));
+        employeeCountPanel.add(employeeLabel, BorderLayout.NORTH);
+
+        countLabel = new JLabel("Loading...", SwingConstants.CENTER);
+        countLabel.setFont(new Font("Bodoni MT", Font.BOLD, 150));
+        employeeCountPanel.add(countLabel, BorderLayout.CENTER);
+
+        upperLeftPanel.add(employeeCountPanel, BorderLayout.CENTER);
+
+        // Initialize labels for upper right panel (Attendance Details)
+        JPanel attendancePanel = new JPanel(new BorderLayout());
+        attendancePanel.setBackground(new Color(250, 234, 224));
+
+        attendanceLabel = new JLabel("Today Attendance", SwingConstants.CENTER);
         attendanceLabel.setFont(new Font("Bodoni MT", Font.BOLD, 40));
-        attendanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        upperRightPanel.add(attendanceLabel, BorderLayout.CENTER);
+        attendancePanel.add(attendanceLabel, BorderLayout.NORTH);
+
+        attendanceCountLabel = new JLabel("Loading...", SwingConstants.CENTER);
+        attendanceCountLabel.setFont(new Font("Bodoni MT", Font.BOLD, 150));
+        attendancePanel.add(attendanceCountLabel, BorderLayout.CENTER);
+
+        upperRightPanel.add(attendancePanel, BorderLayout.CENTER);
 
         // Fetch initial data
         refreshData();
@@ -152,7 +172,7 @@ public class Dashboard extends JPanel {
             int count = entry.getValue();
 
             JLabel titleLabel = new JLabel(jobTitle + ": " + count);
-            titleLabel.setFont(new Font("Arial", Font.BOLD, 15));
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
             titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
             lowerLeftPanel.add(titleLabel);
         }
@@ -172,11 +192,11 @@ public class Dashboard extends JPanel {
     }
 
     public void updateEmployeeCount(int count) {
-        employeeLabel.setText("Total Employees: " + count);
+        countLabel.setText(String.valueOf(count));
     }
 
     public void updateAttendanceCount(int count) {
-        attendanceLabel.setText("Today Attendance : " + count);
+        attendanceCountLabel.setText(String.valueOf(count));
     }
 
     // Testing the Dashboard class
