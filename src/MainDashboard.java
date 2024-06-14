@@ -22,7 +22,7 @@ public class MainDashboard extends JFrame {
 
         // Sidebar buttons
         JButton dashboardButton = createSidebarButton("Dashboard");
-        JButton employeeManagementButton = createSidebarButton("Employee Management");
+        JButton employeeManagementButton = createSidebarButton("Employees");
         JButton attendanceButton = createSidebarButton("Attendance");
         JButton salaryButton = createSidebarButton("Salary");
         JButton calculatorButton = createSidebarButton("Calculator");
@@ -42,7 +42,7 @@ public class MainDashboard extends JFrame {
         // Add content panels for each section
         dashboardPanel = new Dashboard(); // Initialize Dashboard panel instance
         mainPanel.add(dashboardPanel, "Dashboard");
-        mainPanel.add(createEmployeeManagementPanel(), "Employee Management");
+        mainPanel.add(createEmployeeManagementPanel(), "Employees");
         mainPanel.add(createAttendancePanel(), "Attendance");
         mainPanel.add(createSalaryPanel(), "Salary");
         mainPanel.add(new Calculator(), "Calculator");
@@ -55,7 +55,7 @@ public class MainDashboard extends JFrame {
             dashboardPanel.refreshData(); // Refresh Dashboard data when button is clicked
         });
         employeeManagementButton.addActionListener(e -> {
-            showCard("Employee Management");
+            showCard("Employees");
             updateButtonSelection(employeeManagementButton);
         });
         attendanceButton.addActionListener(e -> {
@@ -87,7 +87,7 @@ public class MainDashboard extends JFrame {
     private JButton createSidebarButton(String text) {
         JButton button = new JButton(text);
         button.setFocusPainted(false);
-        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setBackground(new Color(34, 40, 44));
         button.setForeground(Color.WHITE);
         button.setBorderPainted(false);
@@ -230,8 +230,15 @@ public class MainDashboard extends JFrame {
         salaryPanel.setLayout(new GridLayout(2, 2, 10, 10));
         salaryPanel.setBackground(Color.WHITE);
 
-        JButton salaryButton = new JButton("Salary Report");
-        JButton jobRolesButton = new JButton("Job Role Details");
+        JButton salaryButton = new JButton("Salary Report", ImageUtil.resizeImageIcon("src/images/salaryReport.png", 200, 200));
+        salaryButton.setBackground(new Color(250, 246, 228));
+        salaryButton.setFont(new Font("Arial", Font.BOLD, 30));
+        JButton jobRolesButton = new JButton("Job Role Details", ImageUtil.resizeImageIcon("src/images/jobroles .png", 200, 200));
+        jobRolesButton.setBackground(new Color(250, 234, 224));
+        jobRolesButton.setFont(new Font("Arial", Font.BOLD, 30));
+        JButton printButton = new JButton("Print Salary Sheets", ImageUtil.resizeImageIcon("src/images/printSheet.png", 200, 200));
+        printButton.setBackground(new Color(250, 234, 224));
+        printButton.setFont(new Font("Arial", Font.BOLD, 30));
 
         // Add action listeners to the buttons
         salaryButton.addActionListener(e -> {
@@ -244,10 +251,16 @@ public class MainDashboard extends JFrame {
             mainPanel.add(jobRoles, "JobRoles");
             cardLayout.show(mainPanel, "JobRoles");
         });
+        printButton.addActionListener(e -> {
+            PrintSalarySheet printSalarySheet = new PrintSalarySheet();
+            mainPanel.add(printSalarySheet, "PrintSalarySheet");
+            cardLayout.show(mainPanel, "PrintSalarySheet");
+        });
 
         // Add buttons to the panel
         salaryPanel.add(salaryButton);
         salaryPanel.add(jobRolesButton);
+        salaryPanel.add(printButton);
 
         return salaryPanel;
     }
