@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Delete">
+  <grid id="27dc6" binding="deletePanel" layout-manager="GridLayoutManager" row-count="19" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="50" left="50" bottom="50" right="50"/>
+    <constraints>
+      <xy x="20" y="20" width="573" height="634"/>
+    </constraints>
+    <properties>
+      <background color="-330012"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <vspacer id="7ea33">
+        <constraints>
+          <grid row="17" column="0" row-span="1" col-span="3" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <component id="4f5d5" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="48" style="1"/>
+          <text value="Delete"/>
+        </properties>
+      </component>
+      <component id="508ed" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value="Enter Name / ID : "/>
+        </properties>
+      </component>
+      <component id="4e7f" class="javax.swing.JTextField" binding="search">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <dropMode value="USE_SELECTION"/>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <toolTipText value="Enter Name"/>
+        </properties>
+      </component>
+      <component id="ceab5" class="javax.swing.JButton" binding="btnSearch">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value="Search"/>
+        </properties>
+      </component>
+      <component id="27e65" class="javax.swing.JLabel" binding="lbl1">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="fe7af" class="javax.swing.JLabel" binding="lbl2">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="c21f2" class="javax.swing.JLabel" binding="lbl4">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="376a" class="javax.swing.JLabel" binding="lbl5">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="e3612" class="javax.swing.JLabel" binding="lbl7">
+        <constraints>
+          <grid row="13" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="3bc87" class="javax.swing.JLabel" binding="lbl8">
+        <constraints>
+          <grid row="14" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="950ab" class="javax.swing.JLabel" binding="lbl10">
+        <constraints>
+          <grid row="15" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="b4082" class="javax.swing.JLabel" binding="lbl11">
+        <constraints>
+          <grid row="16" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="a873" class="javax.swing.JLabel" binding="lbl6">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="94caf" class="javax.swing.JLabel" binding="lbl3">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="6d95c" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="d0f81" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="70460" class="javax.swing.JLabel" binding="fname">
+        <constraints>
+          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="7e4f9" class="javax.swing.JLabel" binding="lName">
+        <constraints>
+          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="7c3ef" class="javax.swing.JLabel" binding="bDay">
+        <constraints>
+          <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="ce434" class="javax.swing.JLabel" binding="address">
+        <constraints>
+          <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="5f09b" class="javax.swing.JLabel" binding="nic">
+        <constraints>
+          <grid row="11" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="9e628" class="javax.swing.JLabel" binding="gender">
+        <constraints>
+          <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="f84eb" class="javax.swing.JLabel" binding="email">
+        <constraints>
+          <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="2bd09" class="javax.swing.JLabel" binding="jobId">
+        <constraints>
+          <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="928d2" class="javax.swing.JLabel" binding="phoneNo">
+        <constraints>
+          <grid row="15" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="720a4" class="javax.swing.JLabel" binding="bankAccount">
+        <constraints>
+          <grid row="16" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="0"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <hspacer id="4205e">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <hspacer id="f9622">
+        <constraints>
+          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <hspacer id="ce67">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <hspacer id="571b0">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <component id="b199b" class="javax.swing.JButton" binding="btnDelete">
+        <constraints>
+          <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bodoni MT" size="20" style="1"/>
+          <text value="Delete"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
